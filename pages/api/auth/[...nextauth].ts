@@ -7,6 +7,7 @@ import Stripe from 'stripe';
 const prisma = new PrismaClient();
 
 export const authOptions = {
+    adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -14,9 +15,8 @@ export const authOptions = {
         }),
     ],
     events: {
-        createUser: async ({user}) => {
+        createUser: async ({ user }) => {
             const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, { apiVersion: '2022-11-15' });
-
 
             if( user.email &&  user.name) {
                 const customer = await stripe.customers.create({
@@ -30,7 +30,6 @@ export const authOptions = {
             }
         }
     },
-    adapter: PrismaAdapter(prisma),
 };
 
 export default NextAuth(authOptions);
