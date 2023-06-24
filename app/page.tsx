@@ -23,7 +23,7 @@ export default async function Home() {
     const products = await getProducts();
     console.log('products',products)
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <main className="grid grid-cols-fluid gap-12">
           <h1 className='text-3xl'>dashboard</h1>
             {products.map((item) => {
                 return (
