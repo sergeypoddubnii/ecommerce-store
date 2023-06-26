@@ -24,7 +24,6 @@ export default async function Home() {
     console.log('products',products)
     return (
         <main className="grid grid-cols-fluid gap-12">
-          <h1 className='text-3xl'>dashboard</h1>
             {products.map((item) => {
                 return (
                     <Product

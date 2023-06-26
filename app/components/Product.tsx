@@ -15,6 +15,8 @@ const Product:FC<IProps> = ({name, image, unit_amount}:IProps) => {
                 src={image}
                 alt={name}
                 className="w-full h-96 object-cover rounded-lg"
+                width={400}
+                height={400}
             />
             <div className='font-medium p-2'>
                 <h1>{name}</h1>
