@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import Product from "@/app/components/Product";
+import {IProduct} from "@/types/Product";
 
 const getProducts = async() => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {apiVersion: "2022-11-15"});
@@ -7,12 +8,17 @@ const getProducts = async() => {
 
     const productWithPrices = await Promise.all(products.data.map(async(product) => {
         const prices = await stripe.prices.list(({product: product.id}))
+        const features = product.metadata.features || '';
+
         return {
             id: product.id,
             name: product.name,
             unit_amount: prices.data[0].unit_amount,
             currency: prices.data[0].currency,
-            image: product.images[0]
+            image: product.images[0],
+            description: product.description,
+            metadata: {features},
+            quantity: 1,
         }
     }));
 
@@ -21,17 +27,12 @@ const getProducts = async() => {
 
 export default async function Home() {
     const products = await getProducts();
-    console.log('products',products)
+
     return (
         <main className="grid grid-cols-fluid gap-12">
-            {products.map((item) => {
+            {products.map((product:IProduct) => {
                 return (
-                    <Product
-                        key={item.name}
-                        name={item.name}
-                        image={item.image}
-                        unit_amount={item.unit_amount}
-                    />
+                    <Product {...product} key={product.id} />
                 )
             })}
         </main>
