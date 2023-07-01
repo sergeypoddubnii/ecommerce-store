@@ -5,11 +5,11 @@ import Link from "next/link";
 import {IProduct} from "@/types/Product";
 
 
-const Product:FC<IProduct> = ({name, image, unit_amount, id}:IProduct) => {
+const Product:FC<IProduct> = ({name, image, unit_amount, id, metadata}:IProduct) => {
     return (
         <Link href={{
             pathname: `/product/${id}`,
-            query: {name, image, unit_amount, id}
+            query: {name, image, unit_amount, id, features: metadata.features}
         }}>
             <div className='text-gray-700'>
                 <Image
