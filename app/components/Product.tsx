@@ -4,12 +4,11 @@ import formatPrice from "@/util/PriceFormat";
 import Link from "next/link";
 import {IProduct} from "@/types/Product";
 
-
-const Product:FC<IProduct> = ({name, image, unit_amount, id, metadata}:IProduct) => {
+const Product:FC<IProduct> = ({name, image, unit_amount, id, metadata, description}:IProduct) => {
     return (
         <Link href={{
             pathname: `/product/${id}`,
-            query: {name, image, unit_amount, id, features: metadata.features}
+            query: {name, image, unit_amount, id, features: metadata.features, description}
         }}>
             <div className='text-gray-700'>
                 <Image
