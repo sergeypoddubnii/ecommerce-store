@@ -2,6 +2,7 @@ import React from 'react';
 import {IProduct} from "@/types/Product";
 import Image from "next/image";
 import formatPrice from "@/util/PriceFormat";
+import AddCart from "@/app/product/[id]/AddCart";
 
 interface IProps {
     searchParams : IProduct,
@@ -28,9 +29,7 @@ async function Product ({searchParams, params}:IProps) {
                         {searchParams.unit_amount && formatPrice(searchParams.unit_amount)}
                     </p>
                 </div>
-                <button className='my-12 text-white py-6 px-6 font-medium rounded-md bg-teal-600'>
-                    add to card
-                </button>
+                <AddCart {...searchParams}/>
             </div>
         </div>
     );

@@ -6,14 +6,16 @@ interface ICart {
     id: string;
     images?: string[],
     description?: string,
-    unit_amount: number,
-    quantity: number,
+    unit_amount: number | null,
+    quantity?: number,
 }
 
 
 interface ICartState {
     isOpen: boolean;
-    cart: ICart[]
+    cart: ICart[];
+    toggleCart: () => void;
+    addProduct: (product:ICart) => void;
 }
 
 export const useCartStore = create<ICartState>()(
@@ -21,8 +23,24 @@ export const useCartStore = create<ICartState>()(
         return {
             cart: [],
             isOpen: false,
+            toggleCart: () => set((state:ICartState) => ({isOpen: !state.isOpen})),
+            addProduct: (product:ICart) => set((state) => {
+                const existingItem = state.cart.find((cartItem:ICart) => cartItem.id === product.id);
+                if(existingItem){
+                    const updatedCart = state.cart.map(cartItem => {
+                        if(cartItem.id === product.id) {
+                            return {...cartItem, quantity: cartItem.quantity + 1 }
+                        }
+                        return cartItem;
+                    })
+                    return {cart: updatedCart}
+                } else {
+                    return {cart: [...state.cart, {...product, quantity: 1 }]}
+                }
+
+            }),
         };
     },
-        {name: 'cart-store'}
+    {name: 'cart-store'}
         )
 );
