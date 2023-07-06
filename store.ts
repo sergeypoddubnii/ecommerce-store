@@ -4,7 +4,7 @@ import {persist} from "zustand/middleware";
 interface ICart {
     name: string;
     id: string;
-    images?: string[],
+    image?: string,
     description?: string,
     unit_amount: number | null,
     quantity?: number,
@@ -27,9 +27,9 @@ export const useCartStore = create<ICartState>()(
             addProduct: (product:ICart) => set((state) => {
                 const existingItem = state.cart.find((cartItem:ICart) => cartItem.id === product.id);
                 if(existingItem){
-                    const updatedCart = state.cart.map(cartItem => {
+                    const updatedCart:ICart[] = state.cart.map((cartItem:ICart) => {
                         if(cartItem.id === product.id) {
-                            return {...cartItem, quantity: cartItem.quantity + 1 }
+                            return {...cartItem, quantity: cartItem.quantity ? cartItem.quantity + 1 : 1 }
                         }
                         return cartItem;
                     })
