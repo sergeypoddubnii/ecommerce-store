@@ -1,10 +1,10 @@
 import {create} from 'zustand';
 import {persist} from "zustand/middleware";
 
-interface ICart {
+export interface ICart {
     name: string;
     id: string;
-    image?: string,
+    image: string,
     description?: string,
     unit_amount: number | null,
     quantity?: number,
