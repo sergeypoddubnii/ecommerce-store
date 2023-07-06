@@ -1,5 +1,6 @@
 import {create} from 'zustand';
 import {persist} from "zustand/middleware";
+import product from "@/app/components/Product";
 
 export interface ICart {
     name: string;
@@ -16,6 +17,7 @@ interface ICartState {
     cart: ICart[];
     toggleCart: () => void;
     addProduct: (product:ICart) => void;
+    removeProduct: (product: ICart) => void;
 }
 
 export const useCartStore = create<ICartState>()(
@@ -36,6 +38,22 @@ export const useCartStore = create<ICartState>()(
                     return {cart: updatedCart}
                 } else {
                     return {cart: [...state.cart, {...product, quantity: 1 }]}
+                }
+
+            }),
+            removeProduct: (product: ICart) => set((state) => {
+                const existingItem = state.cart.find((cartItem:ICart) => cartItem.id === product.id);
+                if(existingItem && existingItem.quantity! > 1){
+                    const updated = state.cart.map((cartItem) => {
+                        if(cartItem.id === product.id) {
+                            return {...cartItem, quantity: cartItem.quantity! - 1};
+                        }
+                        return cartItem;
+                    })
+                    return {cart : updated}
+                } else {
+                    const filteredCart = state.cart.filter((item) => item.id !== product.id);
+                    return { cart: filteredCart};
                 }
 
             }),
