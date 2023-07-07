@@ -3,6 +3,7 @@ import Image from 'next/image';
 import {ICart, useCartStore} from "@/store";
 import formatPrice from "@/util/PriceFormat";
 import {IoAddCircle, IoRemoveCircle} from "react-icons/io5";
+import {AnimatePresence, motion} from 'framer-motion';
 
 export default function Cart(){
     const cartStore = useCartStore();
@@ -12,11 +13,15 @@ export default function Cart(){
     }, 0);
 
     return (
-        <div
+        <motion.div
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
             className='fixed w-full h-screen left-0 top-0 bg-black/25'
             onClick={() => cartStore.toggleCart()}
         >
-            <div
+            <motion.div
+                layout
                 className='bg-white absolute right-0 top-0 w-1/4 h-screen p-12 overflow-y-scroll text-gray-700'
                 onClick={(e) => e.stopPropagation()}
             >
@@ -25,7 +30,11 @@ export default function Cart(){
                 </h1>
                 {cartStore.cart.map((item:ICart) => {
                     return (
-                        <div className='flex py-4 gap-4' key={item.name}>
+                        <motion.div
+                            className='flex py-4 gap-4'
+                            key={item.name}
+                            layout
+                        >
                             <Image
                                 src={item.image}
                                 alt={item.name}
@@ -60,24 +69,33 @@ export default function Cart(){
                                     Price: {item.unit_amount ? formatPrice(item.unit_amount) : 'N/A'}
                                 </p>
                             </div>
-                        </div>
+                        </motion.div>
                     )
                 })}
-                <p>
-                    Total: {formatPrice(totalPrice)}
-                </p>
-                {Boolean(cartStore.cart.length) &&  (
-                    <button className='py-2 mt-4 bg-teal-700 w-full rounded-md text-white'>
-                        checkout
-                    </button>
-                )}
-                {!cartStore.cart.length && (
-                    <div className='flex flex-col items-center gap-12 text-2xl font-medium pt-56 opacity-75'>
-                        <h1>it is empty...(((</h1>
-                    </div>
-                )}
+                <motion.div layout>
+                    {Boolean(cartStore.cart.length) &&  (
+                        <>
+                            <p>Total: {formatPrice(totalPrice)}</p>
+                            <button className='py-2 mt-4 bg-teal-700 w-full rounded-md text-white'>
+                                checkout
+                            </button>
+                        </>
+                    )}
+                </motion.div>
+                <AnimatePresence>
+                    {!cartStore.cart.length && (
+                        <motion.div
+                            className='flex flex-col items-center gap-12 text-2xl font-medium pt-56 opacity-75'
+                            animate={{scale: 1, rotateZ: 0, opacity: 0.75}}
+                            initial={{scale: 0.5, rotateZ: -10, opacity: 0}}
+                            exit={{scale: 0.5, rotateZ: -10, opacity: 0}}
+                        >
+                            <h1>it is empty...(((</h1>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     )
 };
