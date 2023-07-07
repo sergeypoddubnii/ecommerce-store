@@ -22,12 +22,15 @@ export default function Cart(){
         >
             <motion.div
                 layout
-                className='bg-white absolute right-0 top-0 w-1/4 h-screen p-12 overflow-y-scroll text-gray-700'
+                className='bg-white absolute right-0 top-0 h-screen p-12 overflow-y-scroll text-gray-700 w-full lg:w-2/5 '
                 onClick={(e) => e.stopPropagation()}
             >
-                <h1 >
-                    Shopping list
-                </h1>
+                <button
+                    className=' text-sm font-bold pb-12 '
+                    onClick={() => cartStore.toggleCart()}
+                >
+                    Back to store
+                </button>
                 {cartStore.cart.map((item:ICart) => {
                     return (
                         <motion.div
