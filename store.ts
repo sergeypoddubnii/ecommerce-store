@@ -18,6 +18,10 @@ interface ICartState {
     toggleCart: () => void;
     addProduct: (product:ICart) => void;
     removeProduct: (product: ICart) => void;
+    paymentIntent: string;
+    setPayment: (value:string)  => void;
+    onCheckout: string;
+    setCheckout: (value: string) => void;
 }
 
 export const useCartStore = create<ICartState>()(
@@ -25,6 +29,8 @@ export const useCartStore = create<ICartState>()(
         return {
             cart: [],
             isOpen: false,
+            paymentIntent: '',
+            onCheckout: 'cart',
             toggleCart: () => set((state:ICartState) => ({isOpen: !state.isOpen})),
             addProduct: (product:ICart) => set((state) => {
                 const existingItem = state.cart.find((cartItem:ICart) => cartItem.id === product.id);
@@ -57,6 +63,8 @@ export const useCartStore = create<ICartState>()(
                 }
 
             }),
+            setPayment: (value:string) => set((state) => ({paymentIntent: value})),
+            setCheckout: (value: string) => set((state) =>({onCheckout: value}) )
         };
     },
     {name: 'cart-store'}
