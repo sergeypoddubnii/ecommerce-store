@@ -19,6 +19,14 @@ export default function Checkout(){
                 items: cartStore.cart,
                 payment_intend_id: cartStore.paymentIntent
             })
+        }).then((response) => {
+
         })
     },[])
+
+    return (
+        <div>
+            <h1>Checkout</h1>
+        </div>
+    )
 };
