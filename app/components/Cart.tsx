@@ -1,9 +1,11 @@
-'use client';
+'use client'
+
 import Image from 'next/image';
 import {ICart, useCartStore} from "@/store";
 import formatPrice from "@/util/PriceFormat";
 import {IoAddCircle, IoRemoveCircle} from "react-icons/io5";
 import {AnimatePresence, motion} from 'framer-motion';
+import Checkout from "@/app/components/Checkout";
 
 export default function Cart(){
     const cartStore = useCartStore();
@@ -11,6 +13,7 @@ export default function Cart(){
     const totalPrice = cartStore.cart.reduce((acc:number, item:ICart) => {
         return acc + item.unit_amount! * item.quantity!
     }, 0);
+    console.log('cartStore', cartStore)
 
     return (
         <motion.div
@@ -31,60 +34,68 @@ export default function Cart(){
                 >
                     Back to store
                 </button>
-                {cartStore.cart.map((item:ICart) => {
-                    return (
-                        <motion.div
-                            className='flex py-4 gap-4'
-                            key={item.name}
-                            layout
-                        >
-                            <Image
-                                src={item.image}
-                                alt={item.name}
-                                width={120}
-                                height={120}
-                                className='rounded-md h-24'
-                            />
-                            <div className='flex gap-2'>
-                                <h2>{item.name}</h2>
-                                <div>
-                                    <h2>Quantity: {item.quantity}</h2>
-                                    <button onClick={() => cartStore.removeProduct({
-                                        id: item.id,
-                                        image: item.image,
-                                        name: item.name,
-                                        unit_amount: item.unit_amount
-                                    })}>
-                                        <IoRemoveCircle/>
-                                    </button>
-                                    <button onClick={() => cartStore.addProduct({
-                                        id: item.id,
-                                        image: item.image,
-                                        name: item.name,
-                                        unit_amount: item.unit_amount
-                                    })}>
-                                        <IoAddCircle/>
-                                    </button>
-                                </div>
-                                <p
-                                    className='text-sm text-teal-700'
+                {cartStore.onCheckout === 'cart' && (
+                    <>
+                        {cartStore.cart.map((item:ICart) => {
+                            return (
+                                <motion.div
+                                    className='flex py-4 gap-4'
+                                    key={item.name}
+                                    layout
                                 >
-                                    Price: {item.unit_amount ? formatPrice(item.unit_amount) : 'N/A'}
-                                </p>
-                            </div>
-                        </motion.div>
-                    )
-                })}
+                                    <Image
+                                        src={item.image}
+                                        alt={item.name}
+                                        width={120}
+                                        height={120}
+                                        className='rounded-md h-24'
+                                    />
+                                    <div className='flex gap-2'>
+                                        <h2>{item.name}</h2>
+                                        <div>
+                                            <h2>Quantity: {item.quantity}</h2>
+                                            <button onClick={() => cartStore.removeProduct({
+                                                id: item.id,
+                                                image: item.image,
+                                                name: item.name,
+                                                unit_amount: item.unit_amount
+                                            })}>
+                                                <IoRemoveCircle/>
+                                            </button>
+                                            <button onClick={() => cartStore.addProduct({
+                                                id: item.id,
+                                                image: item.image,
+                                                name: item.name,
+                                                unit_amount: item.unit_amount
+                                            })}>
+                                                <IoAddCircle/>
+                                            </button>
+                                        </div>
+                                        <p
+                                            className='text-sm text-teal-700'
+                                        >
+                                            Price: {item.unit_amount ? formatPrice(item.unit_amount) : 'N/A'}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            )
+                        })}
+                    </>
+                )}
                 <motion.div layout>
                     {Boolean(cartStore.cart.length) &&  (
                         <>
                             <p>Total: {formatPrice(totalPrice)}</p>
-                            <button className='py-2 mt-4 bg-teal-700 w-full rounded-md text-white'>
+                            <button
+                                className='py-2 mt-4 bg-teal-700 w-full rounded-md text-white'
+                                onClick={() => cartStore.setCheckout('checkout')}
+                            >
                                 checkout
                             </button>
                         </>
                     )}
                 </motion.div>
+                {cartStore.onCheckout === 'checkout' && <Checkout/>}
                 <AnimatePresence>
                     {!cartStore.cart.length && (
                         <motion.div
