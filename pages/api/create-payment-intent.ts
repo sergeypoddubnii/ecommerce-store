@@ -29,7 +29,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
         status: 'pending',
         paymentIntentId: payment_intent_id,
         products: {
-            create: items.map((item) => ({
+            create: items.map((item:any) => ({
                 name: item.name,
                 description: item.description,
                 unit_amount: item.unit_amount,
