@@ -27,7 +27,8 @@ export default function Checkout(){
             }
             return response.json();
         }).then((data) => {
-            console.log('data', data)
+            setClientSecret(data.paymentIntent.client_secret);
+            cartStore.setPayment(data.paymentIntent.id)
         })
     },[])
 
