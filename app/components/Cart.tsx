@@ -13,7 +13,6 @@ export default function Cart(){
     const totalPrice = cartStore.cart.reduce((acc:number, item:ICart) => {
         return acc + item.unit_amount! * item.quantity!
     }, 0);
-    console.log('cartStore', cartStore)
 
     return (
         <motion.div
@@ -25,15 +24,25 @@ export default function Cart(){
         >
             <motion.div
                 layout
-                className='bg-white absolute right-0 top-0 h-screen p-12 overflow-y-scroll text-gray-700 w-full lg:w-2/5 '
+                className='bg-white absolute right-0 top-0 h-screen p-12 overflow-y-scroll text-gray-700 w-full lg:w-2/5'
                 onClick={(e) => e.stopPropagation()}
             >
-                <button
-                    className=' text-sm font-bold pb-12 '
-                    onClick={() => cartStore.toggleCart()}
-                >
-                    Back to store
-                </button>
+                {cartStore.onCheckout === 'cart' && (
+                    <button
+                        className=' text-sm font-bold pb-12 '
+                        onClick={() => cartStore.toggleCart()}
+                    >
+                        Back to store
+                    </button>
+                )}
+                {cartStore.onCheckout === 'checkout' && (
+                    <button
+                        className=' text-sm font-bold pb-12 '
+                        onClick={() => cartStore.setCheckout('cart')}
+                    >
+                        Check your cart
+                    </button>
+                )}
                 {cartStore.onCheckout === 'cart' && (
                     <>
                         {cartStore.cart.map((item:ICart) => {
@@ -83,7 +92,7 @@ export default function Cart(){
                     </>
                 )}
                 <motion.div layout>
-                    {Boolean(cartStore.cart.length) &&  (
+                    {Boolean(cartStore.cart.length) && cartStore.onCheckout === 'cart' ?  (
                         <>
                             <p>Total: {formatPrice(totalPrice)}</p>
                             <button
@@ -93,7 +102,7 @@ export default function Cart(){
                                 checkout
                             </button>
                         </>
-                    )}
+                    ) : null}
                 </motion.div>
                 {cartStore.onCheckout === 'checkout' && <Checkout/>}
                 <AnimatePresence>
@@ -108,7 +117,6 @@ export default function Cart(){
                         </motion.div>
                     )}
                 </AnimatePresence>
-
             </motion.div>
         </motion.div>
     )

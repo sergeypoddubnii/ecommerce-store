@@ -58,7 +58,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
                 res.status(400).json({message: 'invalid payment intend'})
             }
 
-            const updated_order = await prisma.order.findFirst({
+            await prisma.order.update({
                 where: { id: existing_order?.id},
                 data: {
                     amount: calculateOrderAmount(items),
@@ -74,7 +74,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
                     }
                 }
             })
-            res.status(200).json({paymentIntend: updated_intent});
+            res.status(200).json({paymentIntent: updated_intent});
             return;
         }
 
