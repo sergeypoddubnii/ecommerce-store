@@ -19,9 +19,10 @@ interface ICartState {
     addProduct: (product:ICart) => void;
     removeProduct: (product: ICart) => void;
     paymentIntent: string;
-    setPayment: (value:string)  => void;
+    setPaymentIntent: (value:string)  => void;
     onCheckout: string;
     setCheckout: (value: string) => void;
+    clearCart: () => void;
 }
 
 export const useCartStore = create<ICartState>()(
@@ -63,8 +64,9 @@ export const useCartStore = create<ICartState>()(
                 }
 
             }),
-            setPayment: (value:string) => set((state) => ({paymentIntent: value})),
-            setCheckout: (value: string) => set((state) =>({onCheckout: value}) )
+            setPaymentIntent: (value:string) => set((state) => ({paymentIntent: value})),
+            setCheckout: (value: string) => set((state) =>({onCheckout: value}) ),
+            clearCart: () => set((state) =>({cart:[]}))
         };
     },
     {name: 'cart-store'}
