@@ -27,7 +27,7 @@ export default async function handler(req:NextApiRequest, res: NextApiResponse){
         } catch (e){
           res.status(500).json({message: 'Failed to fetch orders'})
         }
-    }else {
+    } else {
         res.setHeader('Allow', 'GET');
         res.status(405).end('Methods not allowed')
     }

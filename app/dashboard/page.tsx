@@ -2,7 +2,9 @@ import {PrismaClient} from '@prisma/client';
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/pages/api/auth/[...nextauth]";
 import formatPrice from "@/util/PriceFormat";
+import Image from "next/image";
 
+export const revalidate = 0;
 
 const fetchOrders = async () => {
     const prisma = new PrismaClient();
@@ -25,12 +27,14 @@ const fetchOrders = async () => {
 
 export default async function  Dashboard(){
     const orders = await fetchOrders();
-    console.log('orders', orders);
-    if(orders === null)return(<div/>)
+    if(orders === null){
+        return(<div>You need to be logged in to view orders...</div>)
+    }
+
     return (
         <div className='text-bold'>
             {orders.length === 0 ?  <h1>No Orders</h1> : <h1>Your Orders</h1>}
-            <div className='font-medium'>
+            <div className='font-medium rounded-lg p-8 my-12'>
                 {orders.map((item) => {
                     return (
                         <div
@@ -41,7 +45,7 @@ export default async function  Dashboard(){
                             <p>Time:{item.createdDate.toString()}</p>
                             <p className='text-md py-2'>
                                 Status:
-                                <span className={`${item.status === 'complete' ? 'bg-teal-500': 'bg-orange-500'} text-white py-1`}>
+                                <span className={`${item.status === 'complete' ? 'bg-teal-500': 'bg-orange-500'} text-white py-1 rounded-md px-2 mx-2 text-sm`}>
                                     {item.status}
                                 </span>
                             </p>
@@ -58,6 +62,16 @@ export default async function  Dashboard(){
                                             <h2 className='py-2'>
                                                 {product.name}
                                             </h2>
+                                            <div className='flex items-center gap-4'>
+                                                <Image
+                                                    src={product.image as string}
+                                                    alt={product.name}
+                                                    width={36}
+                                                    height={36}
+                                                />
+                                                <p>{formatPrice(product.unit_amount)}</p>
+                                                <p>Quantity: {product.quantity}</p>
+                                            </div>
                                         </div>
                                     )
                                 })}
