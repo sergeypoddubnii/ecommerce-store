@@ -41,8 +41,8 @@ export default async function  Dashboard(){
                             key={item.id}
                             className='rounded-lg'
                         >
-                            <h2>Order reference: {item.id}</h2>
-                            <p>Time:{item.createdDate.toString()}</p>
+                            <h2 className='text-xs font-medium'>Order reference: {item.id}</h2>
+                            <p className='text-xs'>Time:{item.createdDate.toString()}</p>
                             <p className='text-md py-2'>
                                 Status:
                                 <span className={`${item.status === 'complete' ? 'bg-teal-500': 'bg-orange-500'} text-white py-1 rounded-md px-2 mx-2 text-sm`}>
@@ -52,7 +52,7 @@ export default async function  Dashboard(){
                             <p className='font-medium'>
                                 Total:{formatPrice(item.amount)}
                             </p>
-                            <div className='flex gap-8'>
+                            <div className='lg:flex items-center gap-2'>
                                 {item.products.map((product) => {
                                     return (
                                         <div
