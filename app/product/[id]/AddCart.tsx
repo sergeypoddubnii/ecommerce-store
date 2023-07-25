@@ -1,5 +1,6 @@
 'use client';
 import {useCartStore} from "@/store";
+import {useState} from "react";
 
 interface IAddCart {
     name: string;
@@ -11,14 +12,25 @@ interface IAddCart {
 
 export default function AddCart({name, id, image, unit_amount, quantity}:IAddCart) {
     const cartStore  = useCartStore();
+    const [isAdded, setIsAdded] = useState(false);
+
+    const handleAddToCart = () => {
+        cartStore.addProduct({id, name, image, unit_amount, quantity});
+        setIsAdded(false);
+
+        setTimeout(() => {
+            setIsAdded(false);
+        }, 500)
+    };
 
     return (
         <>
             <button
-                onClick={() => cartStore.addProduct({id, name, image, unit_amount, quantity})}
-                className='my-12 text-white py-2 px-6 font-medium rounded-md bg-teal-700'
+                onClick={handleAddToCart}
+                disabled={isAdded}
+                className='my-4 btn btn-primary w-full'
             >
-                Add to cart
+                {!isAdded ? <span>Add to cart</span> : <span>Adding to cart</span>}
             </button>
         </>
     );
