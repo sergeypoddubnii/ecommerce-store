@@ -34,7 +34,7 @@ export default async function  Dashboard(){
     return (
         <div className='text-bold'>
             {orders.length === 0 ?  <h1>No Orders</h1> : <h1>Your Orders</h1>}
-            <div className='font-medium rounded-lg p-8 my-12'>
+            <div className='font-medium rounded-lg p-8 my-12 bg-base-200'>
                 {orders.map((item) => {
                     return (
                         <div

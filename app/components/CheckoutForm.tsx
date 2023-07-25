@@ -54,7 +54,7 @@ export default function CheckoutForm({clientSecret}:{clientSecret:string}){
             <button
                 id='submit'
                 disabled={isLoading || !stripe || !elements}
-                className={`py-2 mt-4 w-full bg-teal-700 rounded-md text-white`}
+                className={`py-2 mt-4 w-full bg-primary rounded-md text-white`}
             >
                 <span id='button-text'>
                     {isLoading ? <span>Processing</span> : <span>Pay now</span>}
