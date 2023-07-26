@@ -1,7 +1,7 @@
 'use client'
 
 import {Session} from "next-auth";
-import {signIn} from "next-auth/react";
+import {signIn, signOut} from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import {useCartStore} from "@/store";
@@ -41,19 +41,36 @@ export default function Nav({user}:Session){
                     </li>
                 )}
                 {user && (
-                    <>
-                        <li>
-                            <Link href={'/dashboard'}>
-                                <Image
-                                    className='rounded-full'
-                                    src={user?.image as string}
-                                    alt={user?.name as string}
-                                    height={36}
-                                    width={36}
-                                />
-                            </Link>
-                        </li>
-                    </>
+                    <li>
+                        <div className='dropdown dropdown-end cursor-pointer'>
+                            <Image
+                                className='rounded-full'
+                                src={user?.image as string}
+                                alt={user?.name as string}
+                                height={36}
+                                width={36}
+                                tabIndex={0}
+                            />
+                            <ul tabIndex={0} className='dropdown-content menu p-4 space-y-4 shadow bg-base-100'>
+                                <Link
+                                    href={'/dashboard'}
+                                    className='hover:bg-base-300 p-4 rounded-md'
+                                    onClick={() => {
+                                        if(document.activeElement instanceof HTMLElement){
+                                            document.activeElement.blur();
+                                    }}}
+                                >
+                                    Orders
+                                </Link>
+                                <li
+                                    className='hover:bg-base-300 p-4 rounded-md'
+                                    onClick={() => signOut()}
+                                >
+                                    SignOut
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 )}
             </ul>
             <AnimatePresence>
