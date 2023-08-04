@@ -66,7 +66,7 @@ export default function Nav({user}:Session){
                                     className='hover:bg-base-300 p-4 rounded-md'
                                     onClick={() => signOut()}
                                 >
-                                    SignOut
+                                    Sign Out
                                 </li>
                             </ul>
                         </div>
