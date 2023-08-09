@@ -24,6 +24,7 @@ export default function Nav({user}:Session){
                     className='flex items-center text-3xl relative cursor-pointer'
                 >
                     <AiFillShopping/>
+
                     <AnimatePresence>
                         {cartStore.cart.length > 0 && (
                             <motion.span
