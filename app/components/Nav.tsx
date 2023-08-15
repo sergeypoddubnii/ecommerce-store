@@ -10,7 +10,6 @@ import { AiFillShopping} from "react-icons/ai";
 import {motion, AnimatePresence} from 'framer-motion';
 import DarkLight from "@/app/components/DarkLight";
 
-
 export default function Nav({user}:Session){
     const cartStore = useCartStore();
     return (
@@ -38,7 +37,7 @@ export default function Nav({user}:Session){
                         )}
                     </AnimatePresence>
                 </li>
-                <DarkLight/>
+                <DarkLight />
                 {!user && (
                     <li className={'bg-primary text-white py-8 px-4 rounded-md'}>
                         <button onClick={() => signIn()}>signIn</button>
