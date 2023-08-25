@@ -9,8 +9,6 @@ export default function Hydrate({children}:{children: ReactNode}) {
     }, []);
 
     return (
-        <>
-        {isHydrated ? children : <div>Loading...</div>}
-        </>
+        <>{isHydrated ? children : <div>Loading...</div>}</>
     )
 }
