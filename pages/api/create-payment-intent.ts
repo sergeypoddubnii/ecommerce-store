@@ -8,10 +8,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, { apiVersion:
 
 const calculateOrderAmount = (items:any) => {
 
-    const total = items.reduce((acc:any, item:any) => {
+    return items.reduce((acc:any, item:any) => {
         return acc += item.unit_amount * item.quantity
     }, 0);
-    return total;
+
 }
 
 const prisma = new PrismaClient();
