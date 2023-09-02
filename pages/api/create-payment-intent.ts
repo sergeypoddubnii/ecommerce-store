@@ -27,7 +27,11 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
     const { items, payment_intent_id} = req.body;
 
     const orderData = {
-        user: {connect: {id: userSession.user?.id}},
+        user: {
+            connect: {
+                id: userSession.user?.id
+            }
+        },
         amount: calculateOrderAmount(items),
         currency: 'usd',
         status: 'pending',
