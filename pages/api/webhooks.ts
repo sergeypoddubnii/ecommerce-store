@@ -2,7 +2,6 @@ import Stripe from 'stripe';
 import {PrismaClient} from '@prisma/client';
 import {NextApiRequest, NextApiResponse} from "next";
 import {buffer} from 'micro';
-
 export const config = {
     api: {
         bodyParser: false,
@@ -37,7 +36,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
         case "payment_intent.created":
             const paymentIntent = event.data.object;
             console.log('Payment intent created');
-            break;
+            return;
         case "charge.succeeded":
             const charge = event.data.object as Stripe.Charge;
             if(typeof charge.payment_intent === "string"){
@@ -46,7 +45,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse){
                     data: {status: "complete"},
                 })
             }
-            break;
+            return;
         default:
             console.log('Unhandled event type:' + event.type);
     }
